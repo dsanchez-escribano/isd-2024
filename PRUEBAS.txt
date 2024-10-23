@@ -1,0 +1,115 @@
+// [add] PartidoServiceClient -a <nombreVisitante> <fechaInicio> <maximoEntradas> <entradasVendidas> <precio>
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.AppServiceClient" -Dexec.args="-addMatch 'Equipo A' 2024-08-15T17:00:00 10 0 20" //partidoID=1 creado
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.AppServiceClient" -Dexec.args="-addMatch 'Equipo B' 2024-09-15T12:00:00 250 0 15" //partidoID=2 creado
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.AppServiceClient" -Dexec.args="-addMatch 'Equipo C' 2024-10-15T19:00:00 200 0 10" //partidoID=3 creado
+
+
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.AppServiceClient" -Dexec.args="-addMatch '' 2024-10-15T19:00:00 200 0 10" //Falla (visitante inválido)
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.AppServiceClient" -Dexec.args="-addMatch 'Equipo D' 2023-07-15T19:00:00 200 0 10" //Falla (fecha inválida)
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.AppServiceClient" -Dexec.args="-addMatch 'Equipo D' 2024-11-15T11:00:00 200 0 -1" // Falla (precio inválido) 
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.AppServiceClient" -Dexec.args="-addMatch 'Equipo D' 2024-11-15T11:00:00 -1 0 10" // Falla (numero entradas inválido)
+
+
+
+
+UPDATE Partido SET fechaInicio='2023-09-15 12:00:00' WHERE partidoID=2;
+
+
+
+
+
+// [buytickets] PartidoServiceClient -t <partidoId> <email> <creditCardNumber> <numeroEntradas>
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.AppServiceClient" -Dexec.args="-buy 1 'user1@gmail.com' '1111222233334444' 5"  // entradaID=1 creada
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.AppServiceClient" -Dexec.args="-buy 1 'user2@gmail.com' '2222333344445555' 4"  // entradaID=2 creada
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.AppServiceClient" -Dexec.args="-buy 3 'user1@gmail.com' '1111222233334444' 8"  // entradaID=3 creada
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.AppServiceClient" -Dexec.args="-buy 3 'user3@gmail.com' '3333444455556666' 7"  // entradaID=4 creada
+
+
+
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.AppServiceClient" -Dexec.args="-buy 1 'user3@gmail.com' '3333444455556666' 2"  // Falla (no quedan entradas suficientes)
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.AppServiceClient" -Dexec.args="-buy 2 'user3@gmail.com' '3333444455556666' 1"  // Falla (partido ya celebrado)
+
+
+
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.AppServiceClient" -Dexec.args="-buy 3 '' '6666777788889999' 4"  // Falla (email inválido)
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.AppServiceClient" -Dexec.args="-buy 3 'user6@gmail.com' '66667777' 4" // Falla (tarjeta inválida)
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.AppServiceClient" -Dexec.args="-buy 3 'user6@gmail.com' '6666777788889999' 0"  // Falla (número de entradas inválido)
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.AppServiceClient" -Dexec.args="-buy 9 'user6@gmail.com' '6666777788889999' 4"  // Falla (partido no existe)
+
+
+
+
+
+
+// [marcarEntradaRecogida] PartidoServiceClient -m <entradaId> <creditCardNumber>
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.AppServiceClient" -Dexec.args="-collect 1 '1111222233334444'"  // Entradas recogidas
+
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.AppServiceClient" -Dexec.args="-collect 1 '1111222233334444'"  // Falla (entradas ya recogidas)
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.AppServiceClient" -Dexec.args="-collect 2 '1111222233334444'"  // Falla (tarjeta incorrecta)
+
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.AppServiceClient" -Dexec.args="-collect 9 '1111222233334444'"  // Falla (compra no existe) 
+
+
+
+
+
+
+// [find] PartidoServiceClient -f <fecha>
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.AppServiceClient" -Dexec.args="-findMatches 2024-09-01" // Devuelve partido con id 1
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.AppServiceClient" -Dexec.args="-findMatches 2024-11-01" // Devuelve partidos con id 1 y 3
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.AppServiceClient" -Dexec.args="-findMatches 2024-08-01" // Devuelve lista vacía
+
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.AppServiceClient" -Dexec.args="-findMatches 2023-08-01" // Falla (fecha pasada) 
+
+
+
+
+
+
+
+// [get Partido] PartidoServiceClient -p <partidoId>
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.AppServiceClient" -Dexec.args="-findMatch 2" // devuelve partido con id 2 
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.AppServiceClient" -Dexec.args="-findMatch 9" // Falla (partido no existe)
+
+
+
+
+
+
+
+// [findEntradas] PartidoServiceClient -e <email>
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.AppServiceClient" -Dexec.args="-findPurchases 'user1@gmail.com'"  // Devuelve compras con id 1 y 3
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.AppServiceClient" -Dexec.args="-findPurchases 'user2@gmail.com'"  // Devuelve compras con id 2
+
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.AppServiceClient" -Dexec.args="-findPurchases 'user6@gmail.com'"  // Devuelve lista vacía
+

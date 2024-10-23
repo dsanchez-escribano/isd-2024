@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.4"
+         xmlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+
+    <display-name>WS App Service</display-name>
+
+    <!-- REST service -->
+    <servlet>
+        <display-name>PartidoServlet</display-name>
+        <servlet-name>PartidoServlet</servlet-name>
+        <servlet-class>
+            es.udc.ws.app.restservice.servlets.PartidoServlet
+        </servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>PartidoServlet</servlet-name>
+        <url-pattern>/partido/*</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <display-name>EntradaServlet</display-name>
+        <servlet-name>EntradaServlet</servlet-name>
+        <servlet-class>
+            es.udc.ws.app.restservice.servlets.EntradaServlet
+        </servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>EntradaServlet</servlet-name>
+        <url-pattern>/entrada/*</url-pattern>
+    </servlet-mapping>
+
+
+    <!-- Thrift service -->
+   <!-- Thrift service -->
+   <!-- Fill XXX and uncomment the following lines --> 
+   <!--
+    <servlet>
+        <servlet-name>ThriftXXXServiceServlet</servlet-name>
+        <servlet-class>es.udc.ws.app.thriftservice.ThriftXXXServiceServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ThriftXXXServiceServlet</servlet-name>
+        <url-pattern>/thrift/XXXservice</url-pattern>
+    </servlet-mapping>
+    -->
+
+    <!-- General configuration -->
+
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
+
+</web-app>
